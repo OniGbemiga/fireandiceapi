@@ -21,3 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('external-books', [BookController::class, 'index']);
+
+Route::prefix('v1')->group(function (){
+    Route::apiResource('books',BookController::class);
+});

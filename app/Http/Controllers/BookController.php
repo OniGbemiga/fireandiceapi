@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -14,31 +15,43 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    // public function index(Request $request)
+    // {
+    //     //validate the incoming query
+    //     $data = $request->validate([
+    //         'name' => 'required|string'
+    //     ]);
+
+    //     //query ice and fire external api
+    //     $response = Http::get('https://www.anapioficeandfire.com/api/books',[
+    //         'name' => $data['name']
+    //     ]);
+
+    //     //get response from external api and convert into an array
+    //     //and format into the necessary data
+    //     if ($response->successful()) {
+    //         $new_response = json_decode($response, true);
+    //         return response()->json([
+    //             'status_code' => 200,
+    //             'status' => 'success',
+    //             'data' => BookResource::collection($new_response)
+    //         ]);
+    //     }
+    //     else{
+    //         return response()->json(['status'=>'error']);
+    //     }
+    // }
+
+    public function index()
     {
-        //validate the incoming query
-        $data = $request->validate([
-            'name' => 'required|string'
-        ]);
+        $books = Book::all();
 
-        //query ice and fire external api
-        $response = Http::get('https://www.anapioficeandfire.com/api/books',[
-            'name' => $data['name']
-        ]);
-
-        //get response from external api and convert into an array
-        //and format into the necessary data
-        if ($response->successful()) {
-            $new_response = json_decode($response, true);
-            return response()->json([
+        return response()->json([
                 'status_code' => 200,
                 'status' => 'success',
-                'data' => BookResource::collection($new_response)
+                'data' => BookResource::collection($books)
             ]);
-        }
-        else{
-            return response()->json(['status'=>'error']);
-        }
+
     }
 
     /**
@@ -49,7 +62,36 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'string|required',
+            'isbn' => 'string|required',
+            'authors' => 'string|required',
+            'number_of_pages' => 'numeric|required',
+            'publisher' => 'string|required',
+            'country' => 'string|required',
+            'release_date' => 'date|required'
+        ]);
+
+        $new_book_entry = Book::create([
+            'name' => $data['name'],
+            'isbn' => $data['isbn'],
+            'authors' => $data['authors'],
+            'number_of_pages' => $data['number_of_pages'],
+            'publisher' => $data['publisher'],
+            'country' => $data['country'],
+            'release_date' => $data['release_date'],
+        ]);
+
+        if ($new_book_entry) {
+            return response()->json([
+                'status_code' => 201,
+                'status' => 'success',
+                'data' => ['book' => new BookResource($new_book_entry)]
+            ]);
+        } else {
+            return response()->json(['status'=>'error']);
+        }
+
     }
 
     /**
