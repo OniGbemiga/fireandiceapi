@@ -102,7 +102,18 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        $book = Book::find($book);
+        if(is_null($book))
+        {
+            return $this->sendError('Book not found.');
+        }
+
+        return response()->json([
+            'status_code' => 200,
+            'status' => 'success',
+            'data' => BookResource::collection($book)
+        ]);
+
     }
 
     /**
