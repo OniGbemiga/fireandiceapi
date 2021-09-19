@@ -114,7 +114,39 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        // return 'yes'.$book;
+        $data = $request->validate([
+            'name' => 'string|sometimes',
+            'isbn' => 'string|sometimes',
+            'authors' => 'string|sometimes',
+            'number_of_pages' => 'numeric|sometimes',
+            'publisher' => 'string|sometimes',
+            'country' => 'string|sometimes',
+            'release_date' => 'date|sometimes'
+        ]);
+
+        return $request->name;
+
+        $update_book = Book::find($book->id);
+        $update_book->name = $data['name'];
+        $update_book->isbn = $data['isbn'];
+        $update_book->authors = $data['authors'];
+        $update_book->number_of_pages = $data['number_of_pages'];
+        $update_book->publisher = $data['publisher'];
+        $update_book->country = $data['country'];
+        $update_book->release_date = $data['release_date'];
+
+        if($update_book->save())
+        {
+            return response()->json([
+                'status_code' => 200,
+                'status' => 'success',
+                'message' => 'The book '.$update_book->name.' was updated successfully',
+                'data' => ['book' => new BookResource($update_book)]
+            ]);
+        }else {
+            return response()->json(['status'=>'error']);
+        }
     }
 
     /**
@@ -125,6 +157,21 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book_names = Book::find($book)->pluck('name');
+        foreach ($book_names as $value) {
+            $book_name = $value;
+        }
+        if($book->delete())
+        {
+            return response()->json([
+                'status_code' => 204,
+                'status' => 'success',
+                'message' => 'The book '.$book_name.' was deleted successfully',
+                'data' => []
+            ]);
+        }else {
+            return response()->json(['status'=>'error']);
+        }
     }
+
 }
