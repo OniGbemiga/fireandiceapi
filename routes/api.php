@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\IceandFire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('external-books', [BookController::class, 'index']);
+Route::get('external-books', IceandFire::class);
 
 Route::prefix('v1')->group(function (){
     Route::apiResource('books',BookController::class);

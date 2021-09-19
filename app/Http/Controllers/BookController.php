@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-
 class BookController extends Controller
 {
     /**
@@ -15,32 +12,6 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index(Request $request)
-    // {
-    //     //validate the incoming query
-    //     $data = $request->validate([
-    //         'name' => 'required|string'
-    //     ]);
-
-    //     //query ice and fire external api
-    //     $response = Http::get('https://www.anapioficeandfire.com/api/books',[
-    //         'name' => $data['name']
-    //     ]);
-
-    //     //get response from external api and convert into an array
-    //     //and format into the necessary data
-    //     if ($response->successful()) {
-    //         $new_response = json_decode($response, true);
-    //         return response()->json([
-    //             'status_code' => 200,
-    //             'status' => 'success',
-    //             'data' => BookResource::collection($new_response)
-    //         ]);
-    //     }
-    //     else{
-    //         return response()->json(['status'=>'error']);
-    //     }
-    // }
 
     public function index()
     {
@@ -102,7 +73,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        $book = Book::find($book);
+        $book = Book::findorFail($book);
         if(is_null($book))
         {
             return $this->sendError('Book not found.');
