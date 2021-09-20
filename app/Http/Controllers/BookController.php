@@ -5,17 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        //Query the database and store it in cache to make it faster
+        return Cache::remember('books', 300, function () {
 
-        return response()->json([
-                'status_code' => 200,
-                'status' => 'success',
-                'data' => BookResource::collection($books)
-            ]);
+            $books = Book::all();
+
+            return response()->json([
+                    'status_code' => 200,
+                    'status' => 'success',
+                    'data' => BookResource::collection($books)
+                ]);
+        });
 
     }
 
@@ -39,12 +45,16 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
+        //find a specific book
         $book = Book::find($book);
+
+        //if the book does not exist return a response
         if(is_null($book))
         {
             return $this->sendError('Book not found.');
         }
 
+        //return a success status if the book exist
         return response()->json([
             'status_code' => 200,
             'status' => 'success',
@@ -55,8 +65,10 @@ class BookController extends Controller
 
     public function update(Book $book)
     {
+        //find a book and update it
         $update_book = Book::find($book->id)->update($this->validateRequest());
 
+        //return a response if book was updated
         if($update_book)
         {
             $book->refresh();
@@ -73,10 +85,13 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+        //get the name of the book to be deleted
         $book_names = Book::find($book)->pluck('name');
         foreach ($book_names as $value) {
             $book_name = $value;
         }
+
+        //delete the book and return a response
         if($book->delete())
         {
             $book->refresh();
