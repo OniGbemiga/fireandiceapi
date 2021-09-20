@@ -52,5 +52,3 @@ $ composer install
 
 ## Run the application
 ```$ php artisan serve ```
-
-```$ npm run dev ```
