@@ -9,19 +9,26 @@ use Illuminate\Support\Facades\Cache;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         //Query the database and store it in cache to make it faster
-        return Cache::remember('books', 300, function () {
+        // return Cache::remember('books', 300, function () use ($request) {
 
-            $books = Book::all();
+            $search = $request->search;
+
+            $books = Book::query()
+                    ->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('country', 'LIKE', "%{$search}%")
+                    ->orWhere('publisher', 'LIKE', "%{$search}%")
+                    ->orWhere('release_date', 'LIKE', "%{$search}%")
+                    ->get();
 
             return response()->json([
                     'status_code' => 200,
                     'status' => 'success',
                     'data' => BookResource::collection($books)
                 ]);
-        });
+        // });
 
     }
 
@@ -30,7 +37,7 @@ class BookController extends Controller
         //create a new entry of the form request in the database
         $new_book_entry = Book::create($this->validateRequest());
 
-        //return a response on
+        //return a response on created
         if ($new_book_entry) {
             return response()->json([
                 'status_code' => 201,

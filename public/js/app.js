@@ -2206,20 +2206,17 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    var _this = this;
-
-    axios.get("http://localhost:8000/api/v1/books/".concat(this.$route.params.id)).then(function (res) {
-      _this.book = res.data.data[0];
+    axios.get("http://localhost:8000/api/v1/books/".concat(this.$route.params.id)).then(function (res) {// this.book = res.data.data[0];
     });
   },
   methods: {
     updatebook: function updatebook() {
-      var _this2 = this;
+      var _this = this;
 
       axios.patch("http://localhost:8000/api/v1/books/".concat(this.$route.params.id), this.book).then(function (res) {
-        _this2.$toaster.success(res.data.message);
+        _this.$toaster.success(res.data.message);
 
-        _this2.$router.push({
+        _this.$router.push({
           name: 'home'
         });
       })["catch"](function (err) {
@@ -38303,7 +38300,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h2", { staticClass: "text-center" }, [_vm._v("Books List")]),
+    _c("h2", { staticClass: "text-center" }, [
+      _vm._v("List of first " + _vm._s(_vm.limit) + " Books")
+    ]),
     _vm._v(" "),
     _c("table", { staticClass: "table" }, [
       _vm._m(0),
@@ -38414,7 +38413,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("h3", { staticClass: "text-center" }, [_vm._v("Update Book")]),
+    _c("h3", { staticClass: "text-center" }, [
+      _vm._v("Update " + _vm._s(_vm.book.name))
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [

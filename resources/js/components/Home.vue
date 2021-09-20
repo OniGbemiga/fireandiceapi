@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2 class="text-center">Books List</h2>
+        <h2 class="text-center">List of first {{limit}} Books</h2>
 
         <table class="table">
             <thead>

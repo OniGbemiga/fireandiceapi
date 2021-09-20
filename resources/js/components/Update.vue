@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h3 class="text-center">Update Book</h3>
+        <h3 class="text-center">Update {{book.name}}</h3>
         <div class="row">
             <div class="col-md-12">
                 <form @submit.prevent="updatebook">
@@ -51,7 +51,7 @@
             axios
                 .get(`http://localhost:8000/api/v1/books/${this.$route.params.id}`)
                 .then((res) => {
-                    this.book = res.data.data[0];
+                    // this.book = res.data.data[0];
                 });
         },
         methods: {
