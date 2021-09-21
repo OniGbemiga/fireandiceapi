@@ -52,3 +52,8 @@ $ composer install
 
 ## Run the application
 ```$ php artisan serve ```
+
+```$ npm run dev ```
+
+#### To use the search feature in ```http://localhost:8000/api/v1/books``` you can add a ***search*** query to the url. 
+For example ```http://localhost:8000/api/v1/books?search=value``` where value can be ***name, country, publisher, release date***
