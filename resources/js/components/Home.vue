@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <h2 class="text-center">List of first {{limit}} Books</h2>
 
         <table class="table">
