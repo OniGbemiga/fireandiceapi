@@ -51,7 +51,8 @@
             axios
                 .get(`http://localhost:8000/api/v1/books/${this.$route.params.id}`)
                 .then((res) => {
-                    // this.book = res.data.data[0];
+                    // console.log(res.data);
+                    this.book = res.data.data[0];
                 });
         },
         methods: {
@@ -62,7 +63,7 @@
                         this.$toaster.success(res.data.message)
                         this.$router.push({ name: 'home' });
                     }).catch((err) => {
-                        console.log(err);
+                        console.log(err.response.data);
                     });
             }
         }

@@ -2206,21 +2206,25 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    axios.get("http://localhost:8000/api/v1/books/".concat(this.$route.params.id)).then(function (res) {// this.book = res.data.data[0];
+    var _this = this;
+
+    axios.get("http://localhost:8000/api/v1/books/".concat(this.$route.params.id)).then(function (res) {
+      // console.log(res.data);
+      _this.book = res.data.data[0];
     });
   },
   methods: {
     updatebook: function updatebook() {
-      var _this = this;
+      var _this2 = this;
 
       axios.patch("http://localhost:8000/api/v1/books/".concat(this.$route.params.id), this.book).then(function (res) {
-        _this.$toaster.success(res.data.message);
+        _this2.$toaster.success(res.data.message);
 
-        _this.$router.push({
+        _this2.$router.push({
           name: 'home'
         });
       })["catch"](function (err) {
-        console.log(err);
+        console.log(err.response.data);
       });
     }
   }
