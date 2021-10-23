@@ -2210,7 +2210,7 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get("http://localhost:8000/api/v1/books/".concat(this.$route.params.id)).then(function (res) {
       // console.log(res.data);
-      _this.book = res.data.data[0];
+      _this.book = res.data.data;
     });
   },
   methods: {

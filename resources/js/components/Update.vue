@@ -52,7 +52,7 @@
                 .get(`http://localhost:8000/api/v1/books/${this.$route.params.id}`)
                 .then((res) => {
                     // console.log(res.data);
-                    this.book = res.data.data[0];
+                    this.book = res.data.data;
                 });
         },
         methods: {
