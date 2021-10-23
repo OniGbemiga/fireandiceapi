@@ -43,7 +43,7 @@ class BookController extends Controller
                 'status_code' => 201,
                 'status' => 'success',
                 'data' => ['book' => new BookResource($new_book_entry)]
-            ]);
+            ],201);
         } else {
             return response()->json(['status'=>'error']);
         }
@@ -53,7 +53,7 @@ class BookController extends Controller
     public function show(Book $book)
     {
         //find a specific book
-        $book = Book::find($book);
+        $book = Book::find($book)->first();
 
         //if the book does not exist return a response
         if(is_null($book))
@@ -65,7 +65,7 @@ class BookController extends Controller
         return response()->json([
             'status_code' => 200,
             'status' => 'success',
-            'data' => BookResource::collection($book)
+            'data' => new BookResource($book)
         ]);
 
     }
